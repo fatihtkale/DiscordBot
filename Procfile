@@ -1,1 +1,1 @@
-DiscordJS: node index.js
+DiscordJS: node .
