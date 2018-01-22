@@ -1,0 +1,5 @@
+Commands:
+
+:one: !ping - returns pong. Is used to see if Jester is alive
+
+:two: !join - Lets you join a squad
