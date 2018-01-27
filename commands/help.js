@@ -1,4 +1,5 @@
-module.exports.run = async (bot, message, args) => {  // What will run when the command is called
+module.exports.run = async (bot, message, args) => {
+  // What will run when the command is called
   const fs = require("fs");
   const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
