@@ -1,5 +1,7 @@
 Commands:
 
-:one: !ping - returns pong. Is used to see if Jester is alive
+:one: !ping - returns pong. Is used to see if FTF Bot is alive
 
-:two: !join - Lets you join a squad
+:two: !changename - Changes your name.
+
+:three: !raven - inside joke

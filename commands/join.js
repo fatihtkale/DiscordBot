@@ -1,4 +1,5 @@
 module.exports.run = async (bot, message, args) => {
+  /*
   if (message.channel.id === "396756899514679297") {
     var voiceChannels = ["396730543162654722", "396755836673720340"];
     //vars
@@ -22,6 +23,7 @@ module.exports.run = async (bot, message, args) => {
       }
     }
   }
+  */
 };
 module.exports.config = {
   command: "join"
