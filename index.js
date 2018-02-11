@@ -5,8 +5,6 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 
 const fs = require("fs"); // requiering package from node no need to download anything
-
-const token = "MzczODUyNTY1MDA5NTk2NDE3.DSllEQ.x49f-YaJn1F7KLZAXHU1j3ubbCE";
 // Calling the userData file
 
 const userData = JSON.parse(fs.readFileSync("Storage/userData.json", "utf8"));
@@ -67,4 +65,4 @@ bot.on("message", message => {
 });
 
 // Log our bot in
-bot.login(token);
+bot.login(process.env.TOKEN);
