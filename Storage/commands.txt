@@ -1,7 +1,3 @@
 Commands:
 
-:one: !ping - returns pong. Is used to see if FTF Bot is alive
-
-:two: !changename - Changes your name.
-
-:three: !raven - inside joke
+:one: !changename <name> - Changes your name. but spaces between name wont work for now
