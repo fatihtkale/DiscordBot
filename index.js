@@ -1,66 +1,117 @@
 // Import the discord.js module
 const Discord = require("discord.js");
+const fs = require("fs"); // requiering package from node no need to download anything
 
 // Create an instance of a Discord client
 const bot = new Discord.Client();
 
-const fs = require("fs"); // requiering package from node no need to download anything
+const config = {
+  prefix: "!",
+  guildId: "371603877289656320"
+};
+
 // Calling the userData file
 
 const userData = JSON.parse(fs.readFileSync("Storage/userData.json", "utf8"));
 const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
-bot.commands = new Discord.Collection(); // Making a collection for all of our commands
 
-fs.readdir("./commands/", (err, files) => {
-  // Reads the directory of the commands folders
-  if (err) console.error(err); // Sends an error message if it gets an error calling the commands
+var guild; // The Fortnite Team Finder Server
+var channels = {}; // Channels of the server
 
-  const jsfiles = files.filter(f => f.split(".").pop() === "js"); // Checks the file extension for 'js', or the text after the . is 'js'
-  if (jsfiles.length <= 0) {
-    return console.log("No commands found...");
-  } else {
-    // returns and sends to console that no commands were found
-    console.log(jsfiles.length + " Commands found.");
-  } // Tells how many commands it found
+class Command {
+  constructor(name, func, args = false) {
+    this.hasArgs = false;
+    this.main = func; // code that runs when command is called
+    this.name = name; // name of the command, prefix + name calls the command
+    this.hasArgs = args;
+  }
+}
 
-  jsfiles.forEach((f, i) => {
-    // Loops through each file
-    const cmds = require(`./commands/${f}`); // Get every choosen file in the js folder
-    console.log(`Command ${f} loading...`); // logs to the console that the command is loading
-    bot.commands.set(cmds.config.command, cmds); // Gets the name of the command and the module in the file
-  });
-});
+// general handler
+class ChatHandler {
+  constructor() {
+    // !changename -- Changes the user's nickname
+    this.changename = new Command("changename", (message) => {
+      const args = parseArgs(message, this.changename);
+      if (message.channel.id === channels["change-my-nickname"].id) {
+        message.channel.send(`Changed name to ${args}.`);
+        message.member.setNickname(args);
+      }
+      else {
+        message.channel.send("Please use #change-my-nickname.")
+      }
+    }, true);
+    this.help = new Command("help", (msg) => {
+      const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
+
+      message.channel.send(commandsList);
+    });
+    this.commands = [this.changename]; // commands only work after they're added to this array
+  }
+  on_message(message) { }
+}
 
 
+function parseArgsSplit(message, command) { // Splits args into array before returning
+  return message.content.replace(config.prefix + command.name, "").trim().split(" ");
+}
+function parseArgs(message, command) { // Just removes the command and returns
+  return message.content.replace(config.prefix + command.name, "").trim();
+}
 
-// The ready event is vital, it means that your bot will only start reacting to information
-// from Discord _after_ ready is emitted
+
+const handlers = {
+  ChatHandler: new ChatHandler(),
+};
+
 
 bot.on("ready", () => {
-  console.log("Bot Launched..."); // Runs when the bot is launched
+  for (let key in handlers) {
+    const val = handlers[key];
+    if (val.on_ready) {
+      val.on_ready();
+    }
+  }
+  loop();
+  for (let i of bot.channels.array()) {
+    if (i.type == "text") {
+      let ch = i;
+      channels[ch.name] = ch;
+    }
+  }
+  guild = bot.guilds.get(config.guildId);
+  console.log("Bot Launched...");
 
   bot.user.setGame("Fortnite Team Finder");
-
-  // You can put any code you want here, it will run when you turn on the bot
 });
-
-// Create an event listener for messages
+// main loop function, use this for timers
+// this will probably use quite a bit of cpu, sorry :(
+function loop() {
+  for (let key in handlers) {
+    const val = handlers[key];
+    if (val.on_loop) {
+      val.on_loop();
+    }
+  }
+  setTimeout(loop, 50);
+}
+// message/command handler
 bot.on("message", message => {
-  // Variables
-  const msg = message.content;
-  const prefix = "!";
-  const cont = message.content.slice(prefix.length).split(" "); // Slices of the prefix and then puts it in a array
-  const args = cont.slice(1); // Everything after the command in an array
-
-  if (!message.content.startsWith(prefix)) return;
-
-  const cmd = bot.commands.get(cont[0]); // Tries to grab the commands that we called
-  if (cmd) cmd.run(bot, message, args); // This checks if it exsists, if it does it runs the command
-
-  // Ignores the messages that the bot has sent.
-  if (message.author.id === "373852565009596417") {
-    // Checks if the id of the sender is the same as the bot
-    return; // Cancels the events
+  if (message.author.id !== bot.user.id) {
+    for (let key in handlers) {
+      const val = handlers[key];
+      val.on_message(message);
+      if (val.commands) {
+        for (let command of val.commands) {
+          if ((message.content == config.prefix + command.name && !command.hasArgs) || (message.content.startsWith(config.prefix + command.name + " "))) {
+            command.main(message);
+            if (val.on_command)
+              val.on_command(message, command);
+            break;
+          }
+        }
+      }
+    }
   }
 });
 
