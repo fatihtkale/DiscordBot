@@ -2,6 +2,8 @@ module.exports.run = async (bot, message, args) => {
   if(message.channel.id === "404609521579982851"){
     changename();
     message.channel.send("Changed your name");
+  }else{
+    message.channel.send("You're either higher role than me :(.");
   }
   
   function changename(){
