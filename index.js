@@ -51,7 +51,7 @@ class ChatHandler {
       message.channel.send(args);
       message.member.setNickname(args);
     });
-    this.commands = [this.changename]; // commands only work after they're added to this array
+    this.commands = [this.changename, this.test]; // commands only work after they're added to this array
   }
   on_message(message) { }
 }
