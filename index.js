@@ -48,11 +48,11 @@ class ChatHandler {
     });
     this.test = new Command("test", (message) => {
       const args = parseArgs(message, this.test);
-      message.channel.send("test");
+      message.channel.send(`Changed name to ${args}.`);
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
-      message.channel.send("0");
+      message.channel.send("1");
     })
     this.commands = [this.changename, this.test, this.ver]; // commands only work after they're added to this array
   }
