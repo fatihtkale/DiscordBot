@@ -1,15 +1,14 @@
 module.exports.run = async (bot, message, args) => {  
   if(message.channel.id === "404609521579982851"){
+    return message.channel.send("Changed your name");
     changename();
-    message.channel.send("Changed your name");
-  }else{
-    message.channel.send("You're either higher role than me :(.");
   }
   
   function changename(){
   var msgList = message.content.split(/\s+/);
   var name = msgList.toString();
   console.log(msgList);
+  
   message.member.setNickname(msgList[1]);
   }
   
