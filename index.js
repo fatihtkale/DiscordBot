@@ -48,7 +48,7 @@ class ChatHandler {
     });
     this.test = new Command("test", (message) => {
       const args = parseArgs(message, this.test);
-      message.channel.send(`Changed name to ${args}.`);
+      message.channel.send(`${message.channel.id === channels["change-my-nickname"].id}.`);
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
