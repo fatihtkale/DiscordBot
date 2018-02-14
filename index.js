@@ -33,13 +33,13 @@ class ChatHandler {
     // !changename -- Changes the user's nickname
     this.changename = new Command("changename", (message) => {
       const args = parseArgs(message, this.changename);
-      if (message.channel.id === channels["change-my-nickname"].id) {
-        message.channel.send(`Changed your name!`).then(() => {message.channel.send("done");}).catch(() => {message.channel.send("error")});
-        message.member.setNickname(args);
-      }
-      else {
+      if (message.channel.id !== channels["change-my-nickname"].id) {
         message.channel.send(`Please use #change-my-nickname.`);
+        return;
       }
+
+      message.member.setNickname(args);
+      message.channel.send(`Changed your name!`);
     }, true);
     this.help = new Command("help", (msg) => {
       const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
@@ -52,7 +52,7 @@ class ChatHandler {
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
-      message.channel.send("1");
+      message.channel.send("3");
     })
     this.commands = [this.changename, this.test, this.ver]; // commands only work after they're added to this array
   }
