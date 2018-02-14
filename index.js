@@ -46,6 +46,11 @@ class ChatHandler {
 
       message.channel.send(commandsList);
     });
+    this.test = new Command("test", (message) => {
+      const args = parseArgs(message, this.test);
+      message.channel.send("test");
+      message.member.setNickname(args);
+    }, true);
     this.commands = [this.changename]; // commands only work after they're added to this array
   }
   on_message(message) { }
