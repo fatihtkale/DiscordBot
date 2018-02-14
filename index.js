@@ -34,11 +34,11 @@ class ChatHandler {
     this.changename = new Command("changename", (message) => {
       const args = parseArgs(message, this.changename);
       if (message.channel.id === channels["change-my-nickname"].id) {
-        message.channel.send(`Changed your name!`);
+        message.channel.send(`Changed your name!`).then(() => {message.channel.send("done");}).catch(() => {message.channel.send("error")});
         message.member.setNickname(args);
       }
       else {
-        message.channel.send(`Please use #change-my-nickname.`)
+        message.channel.send(`Please use #change-my-nickname.`);
       }
     }, true);
     this.help = new Command("help", (msg) => {
