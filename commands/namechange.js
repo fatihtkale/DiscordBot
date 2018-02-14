@@ -1,9 +1,8 @@
 module.exports.run = async (bot, message, args) => {  
-  if(message.channel.id === "404609521579982851"){
+
     return message.channel.send("Changed your name");
     changename();
-  }
-  
+
   function changename(){
   var msgList = message.content.split(/\s+/);
   var name = msgList.toString();
