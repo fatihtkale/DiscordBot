@@ -38,7 +38,7 @@ class ChatHandler {
         message.member.setNickname(args);
       }
       else {
-        message.channel.send("Please use #change-my-nickname.")
+        message.channel.send(`Please use #change-my-nickname. test: ${channels["change-my-nickanme"].id}`)
       }
     }, true);
     this.help = new Command("help", (msg) => {
