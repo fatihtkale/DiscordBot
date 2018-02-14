@@ -1,8 +1,5 @@
 module.exports.run = async (bot, message, args) => {  
-
-    return message.channel.send("Changed your name");
-    changename();
-
+  changename();
   function changename(){
   var msgList = message.content.split(/\s+/);
   var name = msgList.toString();
