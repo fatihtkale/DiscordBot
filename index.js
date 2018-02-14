@@ -7,9 +7,7 @@ const bot = new Discord.Client();
 
 const config = {
   prefix: "!",
-  guildId: "371603877289656320",
-  testGuildId: "412242776562860042",
-  testChannelId: "412242776562860042"
+  guildId: "371603877289656320"
 };
 
 // Calling the userData file
@@ -18,7 +16,6 @@ const userData = JSON.parse(fs.readFileSync("Storage/userData.json", "utf8"));
 const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
 var guild; // The Fortnite Team Finder Server
-var testChannel;
 var channels = {}; // Channels of the server
 
 class Command {
@@ -44,7 +41,7 @@ class ChatHandler {
         message.channel.send(`Please use #change-my-nickname.`)
       }
     }, true);
-    this.help = new Command("help", (message) => {
+    this.help = new Command("help", (msg) => {
       const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
       message.channel.send(commandsList);
@@ -60,10 +57,6 @@ function parseArgsSplit(message, command) { // Splits args into array before ret
 }
 function parseArgs(message, command) { // Just removes the command and returns
   return message.content.replace(config.prefix + command.name, "").trim();
-}
-function log(str)
-{
-  testChannel.send(str)
 }
 
 
@@ -87,7 +80,6 @@ bot.on("ready", () => {
     }
   }
   guild = bot.guilds.get(config.guildId);
-  testChannel = bot.guilds.get(config.testGuildId).channels.get(config.testChannelId);
   console.log("Bot Launched...");
 
   bot.user.setGame("Fortnite Team Finder");
