@@ -7,7 +7,9 @@ const bot = new Discord.Client();
 
 const config = {
   prefix: "!",
-  guildId: "371603877289656320"
+  guildId: "371603877289656320",
+  testGuildId: "412242776562860042",
+  testChannelId: "412242776562860042"
 };
 
 // Calling the userData file
@@ -16,6 +18,7 @@ const userData = JSON.parse(fs.readFileSync("Storage/userData.json", "utf8"));
 const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
 var guild; // The Fortnite Team Finder Server
+var testChannel;
 var channels = {}; // Channels of the server
 
 class Command {
@@ -34,6 +37,7 @@ class ChatHandler {
     this.changename = new Command("changename", (message) => {
       const args = parseArgs(message, this.changename);
       if (message.channel.id === channels["change-my-nickname"].id) {
+        log(args);
         message.channel.send(`Changed name to ${args}.`);
         message.member.setNickname(args);
       }
@@ -41,14 +45,13 @@ class ChatHandler {
         message.channel.send(`Please use #change-my-nickname.`)
       }
     }, true);
-    this.help = new Command("help", (msg) => {
+    this.help = new Command("help", (message) => {
       const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
       message.channel.send(commandsList);
     });
-    this.test = new Command("test", (msg) => {
+    this.test = new Command("test", (message) => {
       const args = parseArgs(message, this.changename);
-      message.channel.send(args);
       message.member.setNickname(args);
     });
     this.commands = [this.changename, this.test]; // commands only work after they're added to this array
@@ -62,6 +65,10 @@ function parseArgsSplit(message, command) { // Splits args into array before ret
 }
 function parseArgs(message, command) { // Just removes the command and returns
   return message.content.replace(config.prefix + command.name, "").trim();
+}
+function log(str)
+{
+  testChannel.send(str)
 }
 
 
@@ -85,6 +92,7 @@ bot.on("ready", () => {
     }
   }
   guild = bot.guilds.get(config.guildId);
+  testChannel = bot.guilds.get(config.testGuildId).channels.get(config.testChannelId);
   console.log("Bot Launched...");
 
   bot.user.setGame("Fortnite Team Finder");
@@ -118,6 +126,10 @@ bot.on("message", message => {
       }
     }
   }
+});
+
+bot.on("error", error => {
+  
 });
 
 // Log our bot in
