@@ -30,25 +30,40 @@ class Command {
 // general handler
 class ChatHandler {
   constructor() {
+
+
     // !changename -- Changes the user's nickname
     this.changename = new Command("changename", (message) => {
       const args = parseArgs(message, this.changename);
+      if (message.channel.id !== channels["change-my-nickname"].id) {
+        message.channel.send(`Please use #change-my-nickname.`);
+        return;
+      }
+
       message.member.setNickname(args);
       message.channel.send(`Changed your name!`);
     }, true);
+
+
     this.help = new Command("help", (msg) => {
       const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
       message.channel.send(commandsList);
     });
+
+
     this.test = new Command("test", (message) => {
       const args = parseArgs(message, this.test);
       message.channel.send(`Changed your name!`);
       message.member.setNickname(args);
     }, true);
+
+
     this.ver = new Command("ver", (message) => {
-      message.channel.send("4");
+      message.channel.send("5");
     })
+
+    
     this.commands = [this.changename, this.test, this.ver]; // commands only work after they're added to this array
   }
   on_message(message) { }
