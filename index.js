@@ -38,13 +38,18 @@ class ChatHandler {
         message.member.setNickname(args);
       }
       else {
-        message.channel.send(`Please use #change-my-nickname. test: ${channels["change-my-nickanme"].id}`)
+        message.channel.send(`Please use #change-my-nickname.`)
       }
     }, true);
     this.help = new Command("help", (msg) => {
       const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
       message.channel.send(commandsList);
+    });
+    this.test = new Command("test", (msg) => {
+      const args = parseArgs(message, this.changename);
+      message.channel.send(args);
+      message.member.setNickname(args);
     });
     this.commands = [this.changename]; // commands only work after they're added to this array
   }
