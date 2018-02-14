@@ -3,11 +3,10 @@ module.exports.run = async (bot, message, args) => {
   if(message.channel.id === "404609521579982851"){
     changename();
     function changename(){
-      var msgList = message.content.split(/\s+/);
-      var name = msgList.toString();
-      console.log(msgList);
+      var name = args.join(" ");
+      console.log(name);
       bot.channels.get("404609521579982851").send("Changed name");
-      message.member.setNickname(msgList[1]);
+      message.member.setNickname(name);
     }
   }
   if(message.channel.id != "404609521579982851"){
