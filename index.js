@@ -132,7 +132,7 @@ bot.on("message", message => {
   }
 });
 
-bot.login("NDExOTU4NzM2MDQzNjM4Nzg0.DWHWuA.Xg7_yaFMuyvzPE-lENbO-oxLa3E");
+bot.login(process.env.TOKEN);
 
 client.on("error", function(err) {
   testChannel.send("Caught exception " + err);
