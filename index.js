@@ -31,7 +31,7 @@ class ChatHandler {
     this.rankwin = new Command("rankwin", (message) => {
         const Fortnite = require('fortnite');
         const client = new Fortnite('fc5c9c9c-0888-4f97-a5ff-1478a29b3c92');
-        client.getInfo('faith2720', 'pc').then(data => { message.channel.send(data); });
+        client.getInfo('faith2720', 'pc').then(data => { message.channel.send(data); }).catch(e => { message.channel.send("error"); });
     });
   
     // !changename -- Changes the user's nickname
@@ -59,7 +59,7 @@ class ChatHandler {
 
 
     this.ver = new Command("ver", (message) => {
-      message.channel.send("5");
+      message.channel.send("6");
     })
 
 
