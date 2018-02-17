@@ -5,7 +5,9 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const config = {
   prefix: "!",
-  guildId: "371603877289656320"
+  guildId: "371603877289656320",
+  testGuildId: "411959617246068759",
+  testGuildChannel: "412242776562860042"
 };
 
 const fs = require("fs"); // requiering package from node no need to download anything
@@ -14,6 +16,7 @@ const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
 var guild; // The Fortnite Team Finder Server
 var channels = {}; // Channels of the server
+var testChannel;
 
 class Command {
   constructor(name, func, args = false) {
@@ -93,6 +96,7 @@ bot.on("ready", () => {
     }
   }
   guild = bot.guilds.get(config.guildId);
+  testChannel = bot.guilds.get(config.testGuildId).channels.get(config.testGuildChannel);
   console.log("Bot Launched...");
 
   bot.user.setGame("Fortnite Team Finder");
@@ -129,3 +133,11 @@ bot.on("message", message => {
 });
 
 bot.login("NDExOTU4NzM2MDQzNjM4Nzg0.DWHWuA.Xg7_yaFMuyvzPE-lENbO-oxLa3E");
+
+client.on("error", function(err) {
+  testChannel.send("Caught exception " + err);
+});
+
+process.on("uncaughtException", function(err) {
+  testChannel.send("Caught exception " + err);
+});
