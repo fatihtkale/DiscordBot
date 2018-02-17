@@ -1,17 +1,14 @@
 // Import the discord.js module
 const Discord = require("discord.js");
-const fs = require("fs"); // requiering package from node no need to download anything
 
 // Create an instance of a Discord client
 const bot = new Discord.Client();
-
 const config = {
   prefix: "!",
   guildId: "371603877289656320"
 };
 
-// Calling the userData file
-
+const fs = require("fs"); // requiering package from node no need to download anything
 const userData = JSON.parse(fs.readFileSync("Storage/userData.json", "utf8"));
 const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
@@ -30,8 +27,13 @@ class Command {
 // general handler
 class ChatHandler {
   constructor() {
-
-
+    
+      this.rankwin = new Command("rankwin", (message) => {
+        const Fortnite = require('fortnite');
+        const client = new Fortnite('fc5c9c9c-0888-4f97-a5ff-1478a29b3c92');
+        client.getInfo('faith2720', 'pc').then(data => console.log(data));
+      });
+  
     // !changename -- Changes the user's nickname
     this.changename = new Command("changename", (message) => {
       const args = parseArgs(message, this.changename);
@@ -39,18 +41,15 @@ class ChatHandler {
         message.channel.send(`Please use #change-my-nickname.`);
         return;
       }
-
       message.member.setNickname(args);
       message.channel.send(`Changed your name!`);
     }, true);
-
 
     this.help = new Command("help", (msg) => {
       const commandsList = fs.readFileSync("Storage/commands.txt", "utf8");
 
       message.channel.send(commandsList);
     });
-
 
     this.test = new Command("test", (message) => {
       const args = parseArgs(message, this.test);
@@ -63,13 +62,11 @@ class ChatHandler {
       message.channel.send("5");
     })
 
-    
-    this.commands = [this.changename, this.test, this.ver]; // commands only work after they're added to this array
+
+    this.commands = [this.changename, this.test, this.ver, this.rankwin]; // commands only work after they're added to this array
   }
   on_message(message) { }
 }
-
-
 function parseArgsSplit(message, command) { // Splits args into array before returning
   return message.content.replace(config.prefix + command.name, "").trim().split(" ");
 }
@@ -77,11 +74,9 @@ function parseArgs(message, command) { // Just removes the command and returns
   return message.content.replace(config.prefix + command.name, "").trim();
 }
 
-
 const handlers = {
   ChatHandler: new ChatHandler(),
 };
-
 
 bot.on("ready", () => {
   for (let key in handlers) {
@@ -133,5 +128,4 @@ bot.on("message", message => {
   }
 });
 
-// Log our bot in
-bot.login(process.env.TOKEN);
+bot.login("NDExOTU4NzM2MDQzNjM4Nzg0.DWHWuA.Xg7_yaFMuyvzPE-lENbO-oxLa3E");
