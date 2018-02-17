@@ -56,12 +56,13 @@ class ChatHandler {
 
     this.test = new Command("test", (message) => {
       const args = parseArgs(message, this.test);
-      testChannel.send("hi");
+      message.channel.send(`Changed your name!`);
+      message.member.setNickname(args);
     }, true);
 
 
     this.ver = new Command("ver", (message) => {
-      message.channel.send("8");
+      message.channel.send("6");
     })
 
 
