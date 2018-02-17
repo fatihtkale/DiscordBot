@@ -133,11 +133,3 @@ bot.on("message", message => {
 });
 
 bot.login(process.env.TOKEN);
-
-client.on("error", function(err) {
-  testChannel.send("Caught exception " + err);
-});
-
-process.on("uncaughtException", function(err) {
-  testChannel.send("Caught exception " + err);
-});
