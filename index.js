@@ -30,11 +30,10 @@ class Command {
 // general handler
 class ChatHandler {
   constructor() {
-    
     this.rankwin = new Command("rankwin", (message) => {
         const Fortnite = require('fortnite');
         const client = new Fortnite('fc5c9c9c-0888-4f97-a5ff-1478a29b3c92');
-        client.getInfo('faith2720', 'pc').then(data => { message.channel.send(data); }).catch(e => { message.channel.send("error"); });
+        client.getInfo('faith2720', 'pc').then(data => {var parse = JSON.parse(data); message.channel.send(parse)}).catch(e => { message.channel.send("error"); });
     });
   
     // !changename -- Changes the user's nickname
@@ -53,19 +52,14 @@ class ChatHandler {
 
       message.channel.send(commandsList);
     });
-
     this.test = new Command("test", (message) => {
       const args = parseArgs(message, this.test);
       message.channel.send(`Changed your name!`);
       message.member.setNickname(args);
     }, true);
-
-
     this.ver = new Command("ver", (message) => {
       message.channel.send("6");
     })
-
-
     this.commands = [this.changename, this.test, this.ver, this.rankwin]; // commands only work after they're added to this array
   }
   on_message(message) { }
