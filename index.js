@@ -88,7 +88,7 @@ class ChatHandler {
     this.link = new Command("link", (message) => {
       let epic = parseArgsClean(message, this.link);
       let success = true;
-      client.getInfo(epic, "pc").catch(() => { success = false; }).then(() => {
+      client.getInfo(epic, "pc").catch(() => { success = false; }).then(
         data => {
           //var output = JSON.stringify(data);
           const wins = getStat(data.lifetimeStats, "wins").value;
@@ -119,7 +119,7 @@ class ChatHandler {
             }
             message.react("👍");
           });
-        }
+        
         if (!success) {
           message.react("👎");
           message.author.send("Linked unsuccessfully. Please check that you have the correct username.");
