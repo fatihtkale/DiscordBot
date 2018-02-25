@@ -1,5 +1,7 @@
 // Import the discord.js module
 const Discord = require("discord.js");
+const Fortnite = require('fortnite');
+const client = new Fortnite('fc5c9c9c-0888-4f97-a5ff-1478a29b3c92');
 
 // Create an instance of a Discord client
 const bot = new Discord.Client();
@@ -31,11 +33,16 @@ class Command {
 class ChatHandler {
   constructor() {
     this.rankwin = new Command("rankwin", (message) => {
-        const Fortnite = require('fortnite');
-        const client = new Fortnite('fc5c9c9c-0888-4f97-a5ff-1478a29b3c92');
-        client.getInfo('faith2720', 'pc').then(data => {var parse = JSON.parse(data); message.channel.send(parse)}).catch(e => { message.channel.send("error"); });
+      client.getInfo('faith2720', 'pc').then(
+        data => {
+          //var output = JSON.stringify(data);
+          console.log(data.Account.lifetimeStats.wins);
+        }).catch
+        (e => {
+          console.log("error" + e);
+        });
     });
-  
+
     // !changename -- Changes the user's nickname
     this.changename = new Command("changename", (message) => {
       const args = parseArgs(message, this.changename);
@@ -126,4 +133,4 @@ bot.on("message", message => {
   }
 });
 
-bot.login(process.env.TOKEN);
+bot.login("NDExOTU4NzM2MDQzNjM4Nzg0.DWHWuA.Xg7_yaFMuyvzPE-lENbO-oxLa3E");
