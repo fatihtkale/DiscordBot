@@ -34,7 +34,7 @@ class ChatHandler {
   constructor() {
     this.rankwin = new Command("rankwin", (message) => {
       function getStat(statlist, stat) {
-        return statlist.find(function(e) {
+        return statlist.find(function (e) {
           return e.stat === stat;
         });
       }
@@ -52,39 +52,36 @@ class ChatHandler {
         data => {
           //var output = JSON.stringify(data);
           const wins = getStat(data.lifetimeStats, "wins").value;
-          
+
           if (wins < 10) {
             message.channel.send("You need to have at least 10 wins to get a rank.");
             return;
           }
           message.member.removeRoles([getRole("Bronze"), getRole("Silver"), getRole("Gold"), getRole("Platinum"), getRole("Diamond"), getRole("Ruby")]).then(() => {
-          if (wins > 1000) {
-            message.member.addRole(getRole("Ruby"));
-            message.channel.send("You are now Ruby.");
-          }
-          else if (wins > 500) {
-            message.member.addRole(getRole("Diamond"));
-            message.channel.send("You are now Diamond.");
-          }
-          else if (wins > 250) {
-            message.member.addRole(getRole("Platinum"));
-            message.channel.send("You are now Platinum.");
-          }
-          else if (wins > 100) {
-            message.member.addRole(getRole("Gold"));
-            message.channel.send("You are now Gold.");
-          }
-          else if (wins > 50) {
-            message.member.addRole(getRole("Silver"));
-            message.channel.send("You are now Silver.");
-          }
-          else if (wins > 10) {
-            message.member.addRole(getRole("Bronze"));
-            message.channel.send("You are now Bronze.");
-          }});
+            if (wins > 1000) {
+              message.member.addRole(getRole("Ruby"));
+            }
+            else if (wins > 500) {
+              message.member.addRole(getRole("Diamond"));
+            }
+            else if (wins > 250) {
+              message.member.addRole(getRole("Platinum"));
+            }
+            else if (wins > 100) {
+              message.member.addRole(getRole("Gold"));
+            }
+            else if (wins > 50) {
+              message.member.addRole(getRole("Silver"));
+            }
+            else if (wins > 10) {
+              message.member.addRole(getRole("Bronze"));
+            }
+            message.react("👍");
+          });
         }).catch
         (e => {
-          message.channel.send("Error: " + e);
+          message.react("👎");
+          message.author.send("Error: " + e);
         });
     });
 
@@ -93,13 +90,14 @@ class ChatHandler {
       let success = true;
       client.getInfo(epic, "pc").catch(() => { success = false; }).then(() => {
         if (!success) {
-          message.channel.send("Unsuccessful. Please check that you have the correct username.");
+          message.react("👎");
+          message.author.send("Linked unsuccessfully. Please check that you have the correct username.");
           return;
         }
 
         userData[message.author.id] = epic;
-        fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), {encoding: "utf8"});
-        message.channel.send("You're now linked.");
+        fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), { encoding: "utf8" });
+        message.react("👍");
       });
     });
 
@@ -111,7 +109,7 @@ class ChatHandler {
         return;
       }
       message.member.setNickname(args);
-      message.channel.send(`Changed your name!`);
+      message.react("👍");
     }, true);
 
     this.help = new Command("help", (msg) => {
@@ -127,7 +125,7 @@ class ChatHandler {
     }, true);
 
     this.ver = new Command("ver", (message) => {
-      message.channel.send("17");
+      message.channel.send("18");
     })
 
     this.commands = [this.changename, this.test, this.ver, this.rankwin, this.link]; // commands only work after they're added to this array
