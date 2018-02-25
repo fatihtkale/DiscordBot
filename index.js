@@ -42,7 +42,7 @@ class ChatHandler {
       client.getInfo('faith2720', 'pc').then(
         data => {
           //var output = JSON.stringify(data);
-          message.channel.send("Lifetime Wins: " + getStat(data.lifetimeStats, "wins"));
+          message.channel.send("Lifetime Wins: " + getStat(data.lifetimeStats, "wins").value);
         }).catch
         (e => {
           message.channel.send("error" + e);
@@ -71,7 +71,7 @@ class ChatHandler {
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
-      message.channel.send("11");
+      message.channel.send("12");
     })
     this.commands = [this.changename, this.test, this.ver, this.rankwin]; // commands only work after they're added to this array
   }
