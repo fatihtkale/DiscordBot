@@ -35,15 +35,14 @@ class ChatHandler {
     this.rankwin = new Command("rankwin", (message) => {
       function getStat(statlist, stat) {
         return statlist.find(function(e) {
-          message.channel.send(`${e.stat}, ${stat}, ${e.stat === stat}`);
-          e.stat === stat;
+          return e.stat === stat;
         });
       }
 
       client.getInfo('faith2720', 'pc').then(
         data => {
           //var output = JSON.stringify(data);
-          message.channel.send("Lifetime Wins: " + getStat(data.lifetimeStats, "wins"));
+          message.channel.send("Lifetime Wins: " + getStat(data.lifetimeStats, "wins").value);
         }).catch
         (e => {
           message.channel.send("error" + e);
