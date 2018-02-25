@@ -52,7 +52,7 @@ class ChatHandler {
     // !changename -- Changes the user's nickname
     this.changename = new Command("changename", (message) => {
       const args = parseArgs(message, this.changename);
-      if (message.channel.id !== channels["change-my-nickname"].id) {
+      if (message.channel.name !== "change-my-nickname") {
         message.channel.send(`Please use #change-my-nickname.`);
         return;
       }
