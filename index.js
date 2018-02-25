@@ -33,10 +33,16 @@ class Command {
 class ChatHandler {
   constructor() {
     this.rankwin = new Command("rankwin", (message) => {
+      function getStat(statlist, stat) {
+        return statlist.find(function(e) {
+          e.stat == stat;
+        });
+      }
+
       client.getInfo('faith2720', 'pc').then(
         data => {
           //var output = JSON.stringify(data);
-          message.channel.send(JSON.stringify(data));
+          message.channel.send("Lifetime Wins: " + getStat(data.lifetimeStats));
         }).catch
         (e => {
           message.channel.send("error" + e);
@@ -65,7 +71,7 @@ class ChatHandler {
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
-      message.channel.send("8");
+      message.channel.send("9");
     })
     this.commands = [this.changename, this.test, this.ver, this.rankwin]; // commands only work after they're added to this array
   }
