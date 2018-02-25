@@ -35,14 +35,15 @@ class ChatHandler {
     this.rankwin = new Command("rankwin", (message) => {
       function getStat(statlist, stat) {
         return statlist.find(function(e) {
-          e.stat == stat;
+          message.channel.send(`${e.stat}, ${stat}, ${e.stat === stat}`);
+          e.stat === stat;
         });
       }
 
       client.getInfo('faith2720', 'pc').then(
         data => {
           //var output = JSON.stringify(data);
-          message.channel.send("Lifetime Wins: " + getStat(data.lifetimeStats, "wins").value);
+          message.channel.send("Lifetime Wins: " + getStat(data.lifetimeStats, "wins"));
         }).catch
         (e => {
           message.channel.send("error" + e);
@@ -71,7 +72,7 @@ class ChatHandler {
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
-      message.channel.send("12");
+      message.channel.send("13");
     })
     this.commands = [this.changename, this.test, this.ver, this.rankwin]; // commands only work after they're added to this array
   }
