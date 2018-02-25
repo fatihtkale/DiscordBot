@@ -86,6 +86,15 @@ class ChatHandler {
     });
 
     this.link = new Command("link", (message) => {
+      function getStat(statlist, stat) {
+        return statlist.find(function (e) {
+          return e.stat === stat;
+        });
+      }
+
+      function getRole(rolename) {
+        return message.guild.roles.find("name", rolename);
+      }
       let epic = parseArgsClean(message, this.link);
       let success = true;
       client.getInfo(epic, "pc").catch(() => { success = false; }).then(
