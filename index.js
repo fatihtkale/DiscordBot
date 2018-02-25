@@ -39,14 +39,19 @@ class ChatHandler {
         });
       }
 
-      client.getInfo('faith2720', 'pc').then(
-        data => {
-          //var output = JSON.stringify(data);
-          message.channel.send("Lifetime Wins: " + getStat(data.lifetimeStats, "wins").value);
-        }).catch
-        (e => {
-          message.channel.send("error" + e);
-        });
+      
+    });
+
+    this.verify = new Command("verify", (message) => {
+      if (message.mentions.members.first()) {
+        member = message.mentions.members.first()
+      }
+      epic = parseArgsClean(message, this.verify)
+      message.channel.send(`${epic}, ${member.displayName}`)
+      admins = ["384435547700985866", "128874748041101312", "176279358892146688", "190738973402988545"]
+      if (admins.includes(message.author.id)) {
+         
+      }
     });
 
     // !changename -- Changes the user's nickname
@@ -71,7 +76,7 @@ class ChatHandler {
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
-      message.channel.send("13");
+      message.channel.send("14");
     })
     this.commands = [this.changename, this.test, this.ver, this.rankwin]; // commands only work after they're added to this array
   }
@@ -82,6 +87,9 @@ function parseArgsSplit(message, command) { // Splits args into array before ret
 }
 function parseArgs(message, command) { // Just removes the command and returns
   return message.content.replace(config.prefix + command.name, "").trim();
+}
+function parseArgsClean(message, command) {
+  return message.cleanContent.replace(config.prefix + command.name, "").trim();
 }
 
 const handlers = {
