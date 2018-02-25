@@ -89,6 +89,37 @@ class ChatHandler {
       let epic = parseArgsClean(message, this.link);
       let success = true;
       client.getInfo(epic, "pc").catch(() => { success = false; }).then(() => {
+        data => {
+          //var output = JSON.stringify(data);
+          const wins = getStat(data.lifetimeStats, "wins").value;
+
+          if (wins < 10) {
+            message.react("👎");
+            message.author.send("You need to have at least 10 wins to get a rank.");
+            return;
+          }
+          message.member.removeRoles([getRole("Bronze"), getRole("Silver"), getRole("Gold"), getRole("Platinum"), getRole("Diamond"), getRole("Ruby")]).then(() => {
+            if (wins > 1000) {
+              message.member.addRole(getRole("Ruby"));
+            }
+            else if (wins > 500) {
+              message.member.addRole(getRole("Diamond"));
+            }
+            else if (wins > 250) {
+              message.member.addRole(getRole("Platinum"));
+            }
+            else if (wins > 100) {
+              message.member.addRole(getRole("Gold"));
+            }
+            else if (wins > 50) {
+              message.member.addRole(getRole("Silver"));
+            }
+            else if (wins > 10) {
+              message.member.addRole(getRole("Bronze"));
+            }
+            message.react("👍");
+          });
+        }
         if (!success) {
           message.react("👎");
           message.author.send("Linked unsuccessfully. Please check that you have the correct username.");
@@ -126,7 +157,7 @@ class ChatHandler {
     }, true);
 
     this.ver = new Command("ver", (message) => {
-      message.channel.send("18");
+      message.channel.send("19");
     })
 
     this.commands = [this.changename, this.test, this.ver, this.rankwin, this.link]; // commands only work after they're added to this array
