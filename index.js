@@ -76,9 +76,9 @@ class ChatHandler {
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
-      message.channel.send("14");
+      message.channel.send("15");
     })
-    this.commands = [this.changename, this.test, this.ver, this.rankwin]; // commands only work after they're added to this array
+    this.commands = [this.changename, this.test, this.ver, this.rankwin, this.verify]; // commands only work after they're added to this array
   }
   on_message(message) { }
 }
