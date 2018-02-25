@@ -119,7 +119,7 @@ class ChatHandler {
     }, true);
 
     this.ver = new Command("ver", (message) => {
-      message.channel.send("15");
+      message.channel.send("16");
     })
 
     this.commands = [this.changename, this.test, this.ver, this.rankwin, this.link]; // commands only work after they're added to this array
