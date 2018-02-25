@@ -39,19 +39,69 @@ class ChatHandler {
         });
       }
 
-      
+      function getRole(rolename) {
+        return message.guild.roles.find("name", rolename);
+      }
+
+      if (userData[message.author.id] === undefined) {
+        message.channel.send("You're not verified - please verify your account before using this command.");
+        return;
+      }
+
+      client.getInfo(userData[message.author.id], 'pc').then(
+        data => {
+          //var output = JSON.stringify(data);
+          const wins = getStat(data.lifetimeStats, "wins").value;
+          
+          if (wins < 10) {
+            message.channel.send("You need to have at least 10 wins to get a rank.");
+            return;
+          }
+          message.member.removeRoles([getRole("Bronze"), getRole("Silver"), getRole("Gold"), getRole("Platinum"), getRole("Diamond"), getRole("Ruby")]);
+          if (wins > 1000) {
+            message.member.addRole(getRole("Ruby"));
+            message.channel.send("You are now Ruby.");
+          }
+          else if (wins > 500) {
+            message.member.addRole(getRole("Diamond"));
+            message.channel.send("You are now Diamond.");
+          }
+          else if (wins > 250) {
+            message.member.addRole(getRole("Platinum"));
+            message.channel.send("You are now Platinum.");
+          }
+          else if (wins > 100) {
+            message.member.addRole(getRole("Gold"));
+            message.channel.send("You are now Gold.");
+          }
+          else if (wins > 50) {
+            message.member.addRole(getRole("Silver"));
+            message.channel.send("You are now Silver.");
+          }
+          else if (wins > 10) {
+            message.member.addRole(getRole("Bronze"));
+            message.channel.send("You are now Bronze.");
+          }
+        }).catch
+        (e => {
+          message.channel.send("Error: " + e);
+        });
     });
 
     this.verify = new Command("verify", (message) => {
-      if (message.mentions.members.first()) {
-        member = message.mentions.members.first()
+      let member;
+      if (message.mentions.members.first() !== undefined) {
+        member = message.mentions.members.first();
       }
-      epic = parseArgsClean(message, this.verify)
-      message.channel.send(`${epic}, ${member.displayName}`)
-      admins = ["384435547700985866", "128874748041101312", "176279358892146688", "190738973402988545"]
+      else return;
+      let epic = parseArgsClean(message, this.verify).split("@", 1)[0].trim();
+      const admins = ["384435547700985866", "128874748041101312", "176279358892146688", "190738973402988545"]
       if (admins.includes(message.author.id)) {
-         
+        userData[member.id] = epic;
+        fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), {encoding: "utf8"});
+        message.channel.send("User is now verified.");
       }
+      else return;
     });
 
     // !changename -- Changes the user's nickname
@@ -70,14 +120,17 @@ class ChatHandler {
 
       message.channel.send(commandsList);
     });
+
     this.test = new Command("test", (message) => {
       const args = parseArgs(message, this.test);
       message.channel.send(`Changed your name!`);
       message.member.setNickname(args);
     }, true);
+
     this.ver = new Command("ver", (message) => {
       message.channel.send("15");
     })
+
     this.commands = [this.changename, this.test, this.ver, this.rankwin, this.verify]; // commands only work after they're added to this array
   }
   on_message(message) { }
