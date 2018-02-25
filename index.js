@@ -57,7 +57,7 @@ class ChatHandler {
             message.channel.send("You need to have at least 10 wins to get a rank.");
             return;
           }
-          message.member.removeRoles([getRole("Bronze"), getRole("Silver"), getRole("Gold"), getRole("Platinum"), getRole("Diamond"), getRole("Ruby")]);
+          message.member.removeRoles([getRole("Bronze"), getRole("Silver"), getRole("Gold"), getRole("Platinum"), getRole("Diamond"), getRole("Ruby")]).then(() => {
           if (wins > 1000) {
             message.member.addRole(getRole("Ruby"));
             message.channel.send("You are now Ruby.");
@@ -81,7 +81,7 @@ class ChatHandler {
           else if (wins > 10) {
             message.member.addRole(getRole("Bronze"));
             message.channel.send("You are now Bronze.");
-          }
+          }});
         }).catch
         (e => {
           message.channel.send("Error: " + e);
@@ -90,9 +90,17 @@ class ChatHandler {
 
     this.link = new Command("link", (message) => {
       let epic = parseArgsClean(message, this.link);
-      userData[message.author.id] = epic;
-      fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), {encoding: "utf8"});
-      message.channel.send("You're now linked.");
+      let success = true;
+      client.getInfo(epic, "pc").catch(() => { success = false; }).then(() => {
+        if (!success) {
+          message.channel.send("Unsuccessful. Please check that you have the correct username.");
+          return;
+        }
+
+        userData[message.author.id] = epic;
+        fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), {encoding: "utf8"});
+        message.channel.send("You're now linked.");
+      });
     });
 
     // !changename -- Changes the user's nickname
@@ -119,7 +127,7 @@ class ChatHandler {
     }, true);
 
     this.ver = new Command("ver", (message) => {
-      message.channel.send("16");
+      message.channel.send("17");
     })
 
     this.commands = [this.changename, this.test, this.ver, this.rankwin, this.link]; // commands only work after they're added to this array
