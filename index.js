@@ -128,17 +128,20 @@ class ChatHandler {
             }
             message.react("👍");
           });
-        
-        if (!success) {
-          message.react("👎");
-          message.author.send("Linked unsuccessfully. Please check that you have the correct username.");
-          return;
-        }
 
-        userData[message.author.id] = epic;
-        fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), { encoding: "utf8" });
-        message.react("👍");
-      });
+          if (!success) {
+            message.react("👎");
+            message.author.send("Linked unsuccessfully. Please check that you have the correct username.");
+            return;
+          }
+
+          userData[message.author.id] = epic;
+          fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), { encoding: "utf8" });
+          message.react("👍");
+        }).catch(e => {
+          message.react("👎");
+          message.author.send("Error: " + e + ". Please check if you entered the correct username.");
+        });
     });
 
     // !changename -- Changes the user's nickname
@@ -166,7 +169,7 @@ class ChatHandler {
     }, true);
 
     this.ver = new Command("ver", (message) => {
-      message.channel.send("19");
+      message.channel.send("20");
     })
 
     this.commands = [this.changename, this.test, this.ver, this.rankwin, this.link]; // commands only work after they're added to this array
