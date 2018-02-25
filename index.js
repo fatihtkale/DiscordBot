@@ -88,20 +88,11 @@ class ChatHandler {
         });
     });
 
-    this.verify = new Command("verify", (message) => {
-      let member;
-      if (message.mentions.members.first() !== undefined) {
-        member = message.mentions.members.first();
-      }
-      else return;
-      let epic = parseArgsClean(message, this.verify).split("@", 1)[0].trim();
-      const admins = ["384435547700985866", "128874748041101312", "176279358892146688", "190738973402988545"]
-      if (admins.includes(message.author.id)) {
-        userData[member.id] = epic;
-        fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), {encoding: "utf8"});
-        message.channel.send("User is now verified.");
-      }
-      else return;
+    this.link = new Command("link", (message) => {
+      let epic = parseArgsClean(message, this.link);
+      userData[author.id] = epic;
+      fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), {encoding: "utf8"});
+      message.channel.send("You're now linked.");
     });
 
     // !changename -- Changes the user's nickname
@@ -131,7 +122,7 @@ class ChatHandler {
       message.channel.send("15");
     })
 
-    this.commands = [this.changename, this.test, this.ver, this.rankwin, this.verify]; // commands only work after they're added to this array
+    this.commands = [this.changename, this.test, this.ver, this.rankwin, this.link]; // commands only work after they're added to this array
   }
   on_message(message) { }
 }
