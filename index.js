@@ -90,7 +90,7 @@ class ChatHandler {
 
     this.link = new Command("link", (message) => {
       let epic = parseArgsClean(message, this.link);
-      userData[author.id] = epic;
+      userData[message.author.id] = epic;
       fs.writeFileSync("Storage/userData.json", JSON.stringify(userData), {encoding: "utf8"});
       message.channel.send("You're now linked.");
     });
