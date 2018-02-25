@@ -36,10 +36,10 @@ class ChatHandler {
       client.getInfo('faith2720', 'pc').then(
         data => {
           //var output = JSON.stringify(data);
-          console.log(data.Account.lifetimeStats.wins);
+          message.channel.send(data.Account.lifetimeStats.wins);
         }).catch
         (e => {
-          console.log("error" + e);
+          message.channel.send("error" + e);
         });
     });
 
