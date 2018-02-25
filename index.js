@@ -28,7 +28,6 @@ class Command {
     this.hasArgs = args;
   }
 }
-
 // general handler
 class ChatHandler {
   constructor() {
@@ -38,6 +37,7 @@ class ChatHandler {
           return e.stat === stat;
         });
       }
+<<<<<<< Updated upstream
 
       function getRole(rolename) {
         return message.guild.roles.find("name", rolename);
@@ -49,6 +49,9 @@ class ChatHandler {
       }
 
       client.getInfo(userData[message.author.id], 'pc').then(
+=======
+      client.getInfo('faith2720', 'pc').then(
+>>>>>>> Stashed changes
         data => {
           //var output = JSON.stringify(data);
           const wins = getStat(data.lifetimeStats, "wins").value;
