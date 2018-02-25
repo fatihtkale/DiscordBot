@@ -35,6 +35,7 @@ class ChatHandler {
     this.rankwin = new Command("rankwin", (message) => {
       function getStat(statlist, stat) {
         return statlist.find(function(e) {
+          message.channel.send(e.stat);
           e.stat == stat;
         });
       }
@@ -71,7 +72,7 @@ class ChatHandler {
       message.member.setNickname(args);
     }, true);
     this.ver = new Command("ver", (message) => {
-      message.channel.send("9");
+      message.channel.send("10");
     })
     this.commands = [this.changename, this.test, this.ver, this.rankwin]; // commands only work after they're added to this array
   }
